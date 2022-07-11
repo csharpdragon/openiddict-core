@@ -1,0 +1,128 @@
+﻿<Providers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:noNamespaceSchemaLocation="OpenIddictClientWebIntegrationProviders.xsd">
+
+  <Provider Name="Apple" Documentation="https://developer.apple.com/documentation/sign_in_with_apple/sign_in_with_apple_rest_api">
+    <Environment Issuer="https://appleid.apple.com/" />
+
+    <Setting Name="SigningKey" Type="SigningKey" Required="true"
+             Description="Gets or sets the ECDSA signing key associated with the developer account.">
+      <SigningAlgorithm Value="ES256" />
+    </Setting>
+
+    <Setting Name="TeamId" Type="String" Required="true"
+             Description="Gets or sets the Team ID associated with the developer account." />
+  </Provider>
+
+  <Provider Name="GitHub" Documentation="https://docs.github.com/en/developers/apps/building-oauth-apps/authorizing-oauth-apps">
+    <Environment Issuer="https://github.com/">
+      <Configuration AuthorizationEndpoint="https://github.com/login/oauth/authorize"
+                     TokenEndpoint="https://github.com/login/oauth/access_token"
+                     UserinfoEndpoint="https://api.github.com/user" />
+    </Environment>
+  </Provider>
+
+  <Provider Name="Google" Documentation="https://developers.google.com/identity/protocols/oauth2/openid-connect">
+    <Environment Issuer="https://accounts.google.com/" />
+  </Provider>
+
+  <Provider Name="Microsoft" Documentation="https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-protocols-oidc">
+    <!--
+      Note: Microsoft is a multitenant provider that relies on virtual paths to identify instances.
+      As such, the issuer includes a {tenant} placeholder that will be dynamically replaced
+      by OpenIddict at runtime by the tenant configured in the Microsoft Account settings.
+      If no tenant is explicitly configured, the "common" tenant will be automatically used.
+    -->
+
+    <Environment Issuer="https://login.microsoftonline.com/{tenant}/v2.0" />
+
+    <Setting Name="Tenant" Type="String" Required="false" DefaultValue="common"
+             Description="Gets or sets the tenant used to identify the Azure AD instance (by default, the common tenant is used)." />
+  </Provider>
+
+  <Provider Name="Reddit" Documentation="https://github.com/reddit-archive/reddit/wiki/OAuth2">
+    <Environment Issuer="https://www.reddit.com/">
+      <Configuration AuthorizationEndpoint="https://www.reddit.com/api/v1/authorize"
+                     TokenEndpoint="https://www.reddit.com/api/v1/access_token"
+                     UserinfoEndpoint="https://oauth.reddit.com/api/v1/me">
+        <TokenEndpointAuthMethod Value="client_secret_basic" />
+      </Configuration>
+
+      <!--
+        Note: Reddit requires sending at least one scope element. If no scope parameter
+        is set, a misleading "invalid client identifier" error is returned to the caller.
+        To prevent that, the "identity" scope (that is required by the userinfo endpoint)
+        is always added even if another scope was explicitly registered by the user.
+      -->
+
+      <Scope Name="identity" Default="true" Required="true" />
+    </Environment>
+  </Provider>
+
+  <Provider Name="Twitter" Documentation="https://developer.twitter.com/en/docs/authentication/oauth-2-0/authorization-code">
+    <Environment Issuer="https://twitter.com/">
+      <Configuration AuthorizationEndpoint="https://twitter.com/i/oauth2/authorize"
+                     TokenEndpoint="https://api.twitter.com/2/oauth2/token"
+                     UserinfoEndpoint="https://api.twitter.com/2/users/me">
+        <CodeChallengeMethod Value="S256" />
+
+        <TokenEndpointAuthMethod Value="client_secret_basic" />
+      </Configuration>
+
+      <!--
+        Note: Twitter requires requesting the "tweet.read" and "users.read" scopes for the
+        userinfo endpoint to work correctly. As such, these 2 scopes are marked as required
+        so they are always sent even if they were not explicitly added by the user.
+      -->
+
+      <Scope Name="tweet.read" Default="true" Required="true" />
+      <Scope Name="users.read" Default="true" Required="true" />
+    </Environment>
+
+    <Setting Name="Expansions" Collection="true" Type="String"
+             Description="Gets the list of data objects to expand from the userinfo endpoint (by default, all known expansions are requested).">
+      <CollectionItem Value="pinned_tweet_id" Default="true" Required="false" />
+    </Setting>
+
+    <Setting Name="TweetFields" Collection="true" Type="String"
+             Description="Gets the tweet fields that should be retrieved from the userinfo endpoint (by default, all known tweet fields are requested).">
+      <CollectionItem Value="attachments"         Default="true" Required="false" />
+      <CollectionItem Value="author_id"           Default="true" Required="false" />
+      <CollectionItem Value="context_annotations" Default="true" Required="false" />
+      <CollectionItem Value="conversation_id"     Default="true" Required="false" />
+      <CollectionItem Value="created_at"          Default="true" Required="false" />
+      <CollectionItem Value="entities"            Default="true" Required="false" />
+      <CollectionItem Value="geo"                 Default="true" Required="false" />
+      <CollectionItem Value="id"                  Default="true" Required="false" />
+      <CollectionItem Value="in_reply_to_user_id" Default="true" Required="false" />
+      <CollectionItem Value="lang"                Default="true" Required="false" />
+      <CollectionItem Value="non_public_metrics"  Default="true" Required="false" />
+      <CollectionItem Value="public_metrics"      Default="true" Required="false" />
+      <CollectionItem Value="organic_metrics"     Default="true" Required="false" />
+      <CollectionItem Value="promoted_metrics"    Default="true" Required="false" />
+      <CollectionItem Value="possibly_sensitive"  Default="true" Required="false" />
+      <CollectionItem Value="referenced_tweets"   Default="true" Required="false" />
+      <CollectionItem Value="reply_settings"      Default="true" Required="false" />
+      <CollectionItem Value="source"              Default="true" Required="false" />
+      <CollectionItem Value="text"                Default="true" Required="false" />
+      <CollectionItem Value="withheld"            Default="true" Required="false" />
+    </Setting>
+
+    <Setting Name="UserFields" Collection="true" Type="String"
+             Description="Gets the user fields that should be retrieved from the userinfo endpoint (by default, all known user fields are requested).">
+      <CollectionItem Value="created_at"      Default="true" Required="false" />
+      <CollectionItem Value="description"     Default="true" Required="false" />
+      <CollectionItem Value="entities"        Default="true" Required="false" />
+      <CollectionItem Value="id"              Default="true" Required="false" />
+      <CollectionItem Value="location"        Default="true" Required="false" />
+      <CollectionItem Value="name"            Default="true" Required="false" />
+      <CollectionItem Value="pinned_tweet_id" Default="true" Required="false" />
+      <CollectionItem Value="protected"       Default="true" Required="false" />
+      <CollectionItem Value="public_metrics"  Default="true" Required="false" />
+      <CollectionItem Value="url"             Default="true" Required="false" />
+      <CollectionItem Value="username"        Default="true" Required="false" />
+      <CollectionItem Value="verified"        Default="true" Required="false" />
+      <CollectionItem Value="withheld"        Default="true" Required="false" />
+    </Setting>
+  </Provider>
+
+</Providers>

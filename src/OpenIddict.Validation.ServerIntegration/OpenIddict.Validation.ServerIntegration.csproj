@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net461;netstandard2.0;netstandard2.1</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Description>Local server integration package for the OpenIddict validation services.</Description>
+    <PackageTags>$(PackageTags);server;validation</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OpenIddict.Server\OpenIddict.Server.csproj" />
+    <ProjectReference Include="..\OpenIddict.Validation\OpenIddict.Validation.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="OpenIddict.Abstractions" />
+    <Using Include="OpenIddict.Abstractions.OpenIddictConstants" Static="true" />
+    <Using Include="OpenIddict.Abstractions.OpenIddictResources" Alias="SR" />
+    <Using Include="OpenIddict.Validation.OpenIddictValidationEvents" Static="true" />
+    <Using Include="OpenIddict.Validation.OpenIddictValidationHandlers" Static="true" />
+    <Using Include="OpenIddict.Validation.OpenIddictValidationHandlerFilters" Static="true" />
+  </ItemGroup>
+
+</Project>

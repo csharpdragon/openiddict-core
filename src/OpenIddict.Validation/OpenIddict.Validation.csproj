@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net461;net472;netcoreapp3.1;net6.0;netstandard2.0;netstandard2.1</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Description>OpenIddict token validation services.
+
+Note: this package only contains the generic/host-agnostic validation components.
+To use the validation feature on ASP.NET Core or OWIN/Katana, reference the OpenIddict.Validation.AspNetCore or OpenIddict.Validation.Owin package.</Description>
+    <PackageTags>$(PackageTags);validation</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OpenIddict.Abstractions\OpenIddict.Abstractions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging" />
+    <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="OpenIddict.Abstractions" />
+    <Using Include="OpenIddict.Abstractions.OpenIddictConstants" Static="true" />
+    <Using Include="OpenIddict.Abstractions.OpenIddictResources" Alias="SR" />
+    <Using Include="OpenIddict.Validation.OpenIddictValidationEvents" Static="true" />
+    <Using Include="OpenIddict.Validation.OpenIddictValidationHandlers" Static="true" />
+    <Using Include="OpenIddict.Validation.OpenIddictValidationHandlerFilters" Static="true" />
+  </ItemGroup>
+
+</Project>

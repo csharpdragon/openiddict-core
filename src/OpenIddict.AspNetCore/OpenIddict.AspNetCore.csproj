@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net461;netcoreapp3.1;net6.0</TargetFrameworks>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <IncludeSymbols>false</IncludeSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Description>Versatile OpenID Connect stack for ASP.NET Core.</Description>
+    <PackageTags>$(PackageTags);aspnetcore;client;server;validation</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OpenIddict\OpenIddict.csproj" />
+    <ProjectReference Include="..\OpenIddict.Client.AspNetCore\OpenIddict.Client.AspNetCore.csproj" />
+    <ProjectReference Include="..\OpenIddict.Client.DataProtection\OpenIddict.Client.DataProtection.csproj" />
+    <ProjectReference Include="..\OpenIddict.Server.AspNetCore\OpenIddict.Server.AspNetCore.csproj" />
+    <ProjectReference Include="..\OpenIddict.Server.DataProtection\OpenIddict.Server.DataProtection.csproj" />
+    <ProjectReference Include="..\OpenIddict.Validation.AspNetCore\OpenIddict.Validation.AspNetCore.csproj" />
+    <ProjectReference Include="..\OpenIddict.Validation.DataProtection\OpenIddict.Validation.DataProtection.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="_._" Pack="true" PackagePath="lib\net461\_._" />
+    <None Include="_._" Pack="true" PackagePath="lib\netcoreapp3.1\_._" />
+    <None Include="_._" Pack="true" PackagePath="lib\net6.0\_._" />
+  </ItemGroup>
+
+</Project>

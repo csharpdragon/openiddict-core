@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net461;netcoreapp3.1;net6.0;netstandard2.0;netstandard2.1</TargetFrameworks>
+    <SignAssembly>false</SignAssembly>
+    <PublicSign>false</PublicSign>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Description>MongoDB stores for OpenIddict.</Description>
+    <PackageTags>$(PackageTags);mongodb</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OpenIddict.Core\OpenIddict.Core.csproj" />
+    <ProjectReference Include="..\OpenIddict.MongoDb.Models\OpenIddict.MongoDb.Models.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MongoDB.Driver" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="MongoDB.Bson" />
+    <Using Include="MongoDB.Driver" />
+    <Using Include="MongoDB.Driver.Linq" />
+    <Using Include="OpenIddict.Abstractions" />
+    <Using Include="OpenIddict.Abstractions.OpenIddictConstants" Static="true" />
+    <Using Include="OpenIddict.Abstractions.OpenIddictResources" Alias="SR" />
+  </ItemGroup>
+
+</Project>

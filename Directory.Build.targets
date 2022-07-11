@@ -1,0 +1,124 @@
+<Project>
+
+  <Import Project="Sdk.targets" Sdk="Microsoft.DotNet.Arcade.Sdk" />
+  <Import Project="Packages.props" />
+
+  <!--
+    Note: Arcade automatically replaces copyrights defined in .props or .csproj files
+    by the default Microsoft copyright. To ensure this doesn't happen, the replaced
+    copyright is restored in this .targets file using the private variable set in .props.
+    Similarly, both delayed and public signing are disabled to override Arcade's defaults.
+  -->
+  
+  <PropertyGroup>
+    <Copyright>$(_ProjectCopyright)</Copyright>
+    <DelaySign>false</DelaySign>
+    <PublicSign>false</PublicSign>
+  </PropertyGroup>
+
+  <!--
+    Note: .NET Framework and .NET Core <3.0/.NET Standard assemblies are not annotated
+    with nullable references annotations. To avoid errors on these target frameworks,
+    related warnings are disabled by using Nullable = "annotations" instead of "enable".
+  -->
+
+  <PropertyGroup
+    Condition=" ('$(TargetFrameworkIdentifier)' == '.NETCoreApp'   And $([MSBuild]::VersionLessThan($(TargetFrameworkVersion), '3.0'))) Or
+                ('$(TargetFrameworkIdentifier)' == '.NETFramework') Or
+                ('$(TargetFrameworkIdentifier)' == '.NETStandard') ">
+    <Nullable>annotations</Nullable>
+  </PropertyGroup>
+
+  <PropertyGroup
+    Condition=" ('$(TargetFrameworkIdentifier)' == '.NETCoreApp') Or
+                ('$(TargetFrameworkIdentifier)' == '.NETFramework' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '4.7'))) Or
+                ('$(TargetFrameworkIdentifier)' == '.NETStandard'  And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '1.6'))) ">
+    <DefineConstants>$(DefineConstants);SUPPORTS_ECDSA</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup
+    Condition=" ('$(TargetFrameworkIdentifier)' == '.NETCoreApp'   And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '2.0')))   Or
+                ('$(TargetFrameworkIdentifier)' == '.NETFramework' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '4.7.2'))) Or
+                ('$(TargetFrameworkIdentifier)' == '.NETStandard'  And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '2.1'))) ">
+    <DefineConstants>$(DefineConstants);SUPPORTS_CERTIFICATE_GENERATION</DefineConstants>
+    <DefineConstants>$(DefineConstants);SUPPORTS_DIRECT_KEY_CREATION_WITH_SPECIFIED_SIZE</DefineConstants>
+    <DefineConstants>$(DefineConstants);SUPPORTS_EPHEMERAL_KEY_SETS</DefineConstants>
+    <DefineConstants>$(DefineConstants);SUPPORTS_KEY_DERIVATION_WITH_SPECIFIED_HASH_ALGORITHM</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup
+    Condition=" ('$(TargetFrameworkIdentifier)' == '.NETCoreApp'   And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '2.1'))) Or
+                ('$(TargetFrameworkIdentifier)' == '.NETFramework' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '4.8'))) Or
+                ('$(TargetFrameworkIdentifier)' == '.NETStandard'  And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '2.1'))) ">
+    <DefineConstants>$(DefineConstants);SUPPORTS_CERTIFICATE_HASHING_WITH_SPECIFIED_ALGORITHM</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup
+    Condition=" ('$(TargetFrameworkIdentifier)' == '.NETCoreApp'  And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '2.1'))) Or
+                ('$(TargetFrameworkIdentifier)' == '.NETStandard' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '2.1'))) ">
+    <DefineConstants>$(DefineConstants);SUPPORTS_BASE64_SPAN_CONVERSION</DefineConstants>
+    <DefineConstants>$(DefineConstants);SUPPORTS_STATIC_RANDOM_NUMBER_GENERATOR_METHODS</DefineConstants>
+    <DefineConstants>$(DefineConstants);SUPPORTS_TIME_CONSTANT_COMPARISONS</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup
+    Condition=" ('$(TargetFrameworkIdentifier)' == '.NETCoreApp'  And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '2.2'))) Or
+                ('$(TargetFrameworkIdentifier)' == '.NETStandard' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '2.1'))) ">
+    <DefineConstants>$(DefineConstants);SUPPORTS_GENERIC_HOST</DefineConstants>
+    <DefineConstants>$(DefineConstants);SUPPORTS_SERVICE_PROVIDER_IN_HTTP_MESSAGE_HANDLER_BUILDER</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup
+    Condition=" ('$(TargetFrameworkIdentifier)' == '.NETCoreApp'  And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '3.0'))) ">
+    <DefineConstants>$(DefineConstants);SUPPORTS_HTTP_CLIENT_DEFAULT_REQUEST_VERSION</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup
+    Condition=" ('$(TargetFrameworkIdentifier)' == '.NETCoreApp'  And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '3.0'))) Or
+                ('$(TargetFrameworkIdentifier)' == '.NETStandard' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '2.1'))) ">
+    <DefineConstants>$(DefineConstants);SUPPORTS_BCL_ASYNC_ENUMERABLE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup
+    Condition=" ('$(TargetFrameworkIdentifier)' == '.NETCoreApp' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '5.0'))) ">
+    <DefineConstants>$(DefineConstants);SUPPORTS_MULTIPLE_VALUES_IN_QUERYHELPERS</DefineConstants>
+    <DefineConstants>$(DefineConstants);SUPPORTS_HTTP_CLIENT_DEFAULT_REQUEST_VERSION_POLICY</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup
+    Condition=" ('$(TargetFrameworkIdentifier)' == '.NETCoreApp' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '6.0'))) ">
+    <DefineConstants>$(DefineConstants);SUPPORTS_DIRECT_JSON_ELEMENT_SERIALIZATION</DefineConstants>
+    <DefineConstants>$(DefineConstants);SUPPORTS_JSON_NODES</DefineConstants>
+  </PropertyGroup>
+
+  <!--
+    Note: Entity Framework Core 2.x references System.Interactive.Async 3.x, that includes
+    its own IAsyncEnumerable. To work around collisions between this type and the new type
+    now included in the BCL (System.Runtime), an alias is added to System.Interactive.Async.
+  -->
+
+  <Target Name="AddAssemblyAliasToReactiveAsync" AfterTargets="ResolveAssemblyReferences">
+    <ItemGroup>
+      <ReferencePath Condition=" '%(FileName)' == 'System.Interactive.Async' ">
+        <Aliases>reactive</Aliases>
+      </ReferencePath>
+    </ItemGroup>
+  </Target>
+  
+  <!--
+    Note: Arcade always generates .resx backing files with internal static methods/constants.
+    To ensure the OpenIddict resources are public, the default visibility is manually overriden.
+  -->
+
+  <Target Name="OverrideResourcesVisibility" Condition=" @(EmbeddedResourceSGResx) != '' " AfterTargets="_GenerateResxSource">
+    <WriteLinesToFile
+        File=" %(EmbeddedResourceSGResx.SourceOutputPath) "
+        Lines=" $([System.IO.File]::ReadAllText(%(EmbeddedResourceSGResx.SourceOutputPath))
+            .Replace('internal const', 'public const')
+            .Replace('internal static', 'public static')
+            .Replace('static partial class', 'partial class')) "
+        Overwrite="true"
+        Encoding="Unicode" />
+  </Target>
+
+</Project>

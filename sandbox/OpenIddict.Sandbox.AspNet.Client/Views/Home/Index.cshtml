@@ -1,0 +1,48 @@
+﻿@using System.Security.Claims
+@model string
+
+<div class="jumbotron">
+    @if (User?.Identity is { IsAuthenticated: true })
+    {
+        <h1>Welcome, @User.Identity.Name</h1>
+
+        <p>
+            @foreach (var claim in ((ClaimsPrincipal) Context.User).Claims)
+            {
+                <div>@claim.Type: <b>@claim.Value</b></div>
+            }
+        </p>
+
+        if (!string.IsNullOrEmpty(Model))
+        {
+            <h3>Message received from the resource controller: @Model</h3>
+        }
+
+        if (User is ClaimsPrincipal principal &&
+            principal.FindFirst(ClaimTypes.NameIdentifier)?.Issuer is "https://localhost:44349/")
+        {
+            <form action="~/" method="post">
+                @Html.AntiForgeryToken()
+
+                <button class="btn btn-lg btn-warning" type="submit">Query the resource controller</button>
+            </form>
+        }
+
+        <a class="btn btn-lg btn-danger" href="/logout">Sign out</a>
+    }
+
+    else
+    {
+        <h1>Welcome, anonymous</h1>
+        @Html.ActionLink("Sign in using the local OIDC server", "Login", "Authentication",
+            new { provider = "local" }, new { @class = "btn btn-lg btn-success" })
+        @Html.ActionLink("Sign in using the local OIDC server (using GitHub delegation)", "Login", "Authentication",
+            new { provider = "local-github" }, new { @class = "btn btn-lg btn-success" })
+        @Html.ActionLink("Sign in using GitHub", "Login", "Authentication",
+            new { provider = "github" }, new { @class = "btn btn-lg btn-success" })
+        @Html.ActionLink("Sign in using Google", "Login", "Authentication",
+            new { provider = "google" }, new { @class = "btn btn-lg btn-success" })
+        @Html.ActionLink("Sign in using Twitter", "Login", "Authentication",
+            new { provider = "twitter" }, new { @class = "btn btn-lg btn-success" })
+    }
+</div>
